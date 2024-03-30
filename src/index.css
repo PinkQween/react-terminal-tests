@@ -10,3 +10,21 @@ body {
   padding: 1rem;
   box-sizing: border-box;
 }
+
+.terminal {
+  font-family: monospace; /* Use a monospaced font for a terminal-like appearance */
+}
+
+.cursor {
+  display: inline-block; /* Ensure the cursor is inline */
+}
+
+.blink {
+  animation: blink 1s infinite; /* Blink animation */
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0; /* Hide the cursor half of the time */
+  }
+}
