@@ -1,30 +1,42 @@
 import handleKeyPress from './handleTypedCode';
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import globalsContext from './globalsContext';
 
 const KeyPress = ({ children }) => {
-    const context = useContext(globalsContext)
+    const context = useContext(globalsContext);
+    const [isMetaPressed, setIsMetaPressed] = useState(false);
 
     useEffect(() => {
         // let timeoutId;
 
+        const handleKeyUp = (e) => {
+            console.log(e.key);
+            if (e.key == "Meta") {
+                setIsMetaPressed(false);
+            }
+        }
+
         const handleKeyDown = async (e) => {
-            // clearTimeout(timeoutId);
-            // timeoutId = setTimeout(async () => {
-            //     try {
-                    handleKeyPress(e.key, context);
-            //     } catch (error) {
-            //         console.error("Error handling key press:", error);
-            //         // Handle error appropriately, e.g., show an error message
-            //     }
-            // }, 10); // Adjust the delay as needed (e.g., 10 milliseconds)
+            if (e.key === "Meta") {
+                setIsMetaPressed(true);
+            }
+
+            if (!isMetaPressed) {
+                handleKeyPress(e.key, context);
+            }
+
+            if (isMetaPressed && e.key === "v") {
+                e.preventDefault();
+                handleKeyDown(`Paste: ${await navigator.clipboard.readText()}`, context);
+            }
         };
 
         document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
 
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
-            // clearTimeout(timeoutId);
+            document.removeEventListener('keyup', handleKeyUp);
         };
     }, [context]);
 

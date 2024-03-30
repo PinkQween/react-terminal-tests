@@ -1,6 +1,7 @@
-const globals = {
+export default {
     input: "",
+    output: "",
+    history: [],
     cursorPosition: 0,
-}
-
-export default globals;
+    verticalCursorPosition: 0,
+};

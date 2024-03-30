@@ -1,9 +1,12 @@
+import handleCommand from "./handleCommands";
+
 export default (key, { setGlobal, global }) => {
     const tempGlobal = {...global}
 
-    const { input, cursorPosition } = tempGlobal
+    const { input, cursorPosition, history, verticalCursorPosition } = tempGlobal
 
     console.log(key);
+    console.log(tempGlobal);
 
     if (key === "Backspace") {
         // Handle backspace key
@@ -31,10 +34,29 @@ export default (key, { setGlobal, global }) => {
         if (cursorPosition < input.length) {
             tempGlobal.cursorPosition++
         }
-    } else if (key === "Space") {
-        tempGlobal.input = input.slice(0, cursorPosition) + " " + input.slice(cursorPosition);
-        tempGlobal.cursorPosition++;
+    } else if (key === "ArrowUp") {
+        if (verticalCursorPosition < history.length) {
+            tempGlobal.input = history[verticalCursorPosition].input;
+            tempGlobal.verticalCursorPosition++
+        }
+    } else if (key === "ArrowDown") {
+        if (verticalCursorPosition < history.length) {
+            tempGlobal.input = history[verticalCursorPosition].input;
+            tempGlobal.verticalCursorPosition--
+        } else {
+            tempGlobal.input = ""
+        }
+    } else if (key === "Enter") {
+        tempGlobal.output = handleCommand(input);
+        tempGlobal.input = "";
+        tempGlobal.cursorPosition = 0;
+        tempGlobal.history.push({input, output: tempGlobal.output });
+        tempGlobal.verticalCursorPosition = history.length;
+    } else if (key.startsWith("Paste: ")) {
+        tempGlobal.input = tempGlobal.input + key.replace("Paste: ", "")
     }
+
+    console.log(tempGlobal);
 
     setGlobal(tempGlobal)
 }

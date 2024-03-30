@@ -16,7 +16,10 @@ body {
 }
 
 .cursor {
-  display: inline-block; /* Ensure the cursor is inline */
+  display: inline; /* Ensure the cursor is inline */
+  /* position: absolute;
+  top: 0;
+  left: 0; */
 }
 
 .blink {
@@ -27,4 +30,14 @@ body {
   50% {
     opacity: 0; /* Hide the cursor half of the time */
   }
+}
+
+.cursorContainer {
+  position: relative;
+}
+
+.cursorChar {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

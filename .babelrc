@@ -1,0 +1,17 @@
+{
+    "presets": [
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        ["wildcard",
+            {
+            "exts":
+                [
+                    "js",
+                    "flac",
+                    "mp3"
+                ]
+            }
+        ]
+    ]
+}
