@@ -1,7 +1,20 @@
-import globals from './globals'
+export default (key, { setGlobal, global }) => {
+    const tempGlobal = {...global}
 
-export default (key) => {
+    console.log(tempGlobal);
+    console.log(setGlobal);
+
     if (key.length === 1) {
-        globals.setInput(globals.input + key)
+        tempGlobal.input += key;
+
+        console.log(tempGlobal);
+
+        setGlobal(tempGlobal);
+    } else if (key === "Backspace") {
+        tempGlobal.input = tempGlobal.input.slice(0, -1);
+
+        console.log(tempGlobal);
+
+        setGlobal(tempGlobal);
     }
 }

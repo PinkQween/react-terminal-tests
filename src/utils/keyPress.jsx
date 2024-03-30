@@ -1,25 +1,32 @@
 import handleKeyPress from './handleTypedCode';
-import { useEffect, useReducer } from "react";
-import { sleep } from './misc'
+import { useEffect, useContext } from "react";
+import globalsContext from './globalsContext';
 
 const KeyPress = ({ children }) => {
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const context = useContext(globalsContext)
 
     useEffect(() => {
-        document.addEventListener('keydown', async e => {
-            handleKeyPress(e.key);
-            await sleep(1000);
-            forceUpdate();
-        });
+        // let timeoutId;
+
+        const handleKeyDown = async (e) => {
+            // clearTimeout(timeoutId);
+            // timeoutId = setTimeout(async () => {
+            //     try {
+                    handleKeyPress(e.key, context);
+            //     } catch (error) {
+            //         console.error("Error handling key press:", error);
+            //         // Handle error appropriately, e.g., show an error message
+            //     }
+            // }, 10); // Adjust the delay as needed (e.g., 10 milliseconds)
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            document.addEventListener('keydown', async e => {
-                handleKeyPress(e.key);
-                await sleep(1000);
-                forceUpdate();
-            });
+            document.removeEventListener('keydown', handleKeyDown);
+            // clearTimeout(timeoutId);
         };
-    }, []);
+    }, [context]);
 
     return children;
 }

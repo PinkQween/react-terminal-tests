@@ -1,15 +1,5 @@
-class Globals {
-    constructor() {
-        this.input = "";
-    }
-
-    setInput(newInput) {
-        this.input = newInput;
-    }
-
-    getInput() {
-        return this.input;
-    }
+const globals = {
+    input: ""
 }
 
-export default new Globals();
+export default globals;
