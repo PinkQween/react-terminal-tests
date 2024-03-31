@@ -16,7 +16,8 @@
     "babel-plugin-wildcard": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-secret-codes": "^1.1.3"
+    "react-secret-codes": "^1.1.3",
+    "vite-plugin-env-compatible": "^2.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

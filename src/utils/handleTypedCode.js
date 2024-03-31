@@ -8,6 +8,8 @@ export default (key, { setGlobal, global }) => {
     console.log(key);
     console.log(tempGlobal);
 
+    console.log(key === "ArrowUp")
+
     if (key === "Backspace") {
         // Handle backspace key
         if (cursorPosition > 0) {
@@ -35,14 +37,17 @@ export default (key, { setGlobal, global }) => {
             tempGlobal.cursorPosition++
         }
     } else if (key === "ArrowUp") {
-        if (verticalCursorPosition < history.length) {
-            tempGlobal.input = history[verticalCursorPosition].input;
-            tempGlobal.verticalCursorPosition++
+        if (verticalCursorPosition < history.length - 1) {
+            tempGlobal.verticalCursorPosition = tempGlobal.verticalCursorPosition + 1
+            console.log(tempGlobal.history[verticalCursorPosition])
+            tempGlobal.input = tempGlobal.history[tempGlobal.verticalCursorPosition].input;
+        } else {
+            console.log("No more history");
         }
     } else if (key === "ArrowDown") {
-        if (verticalCursorPosition < history.length) {
-            tempGlobal.input = history[verticalCursorPosition].input;
-            tempGlobal.verticalCursorPosition--
+        if (verticalCursorPosition > 0) {
+            tempGlobal.verticalCursorPosition = tempGlobal.verticalCursorPosition - 1
+            tempGlobal.input = tempGlobal.history[tempGlobal.verticalCursorPosition].input;
         } else {
             tempGlobal.input = ""
         }
@@ -54,7 +59,7 @@ export default (key, { setGlobal, global }) => {
         tempGlobal.cursorPosition = 0;
         tempGlobal.history.push({ input, output: tempGlobal.output, location: currentDirectory });
         input.startsWith("clear") ? console.log("Not displaying clear command") : tempGlobal.displayHistory.push({ input, output: tempGlobal.output, location: currentDirectory });
-        tempGlobal.verticalCursorPosition = history.length;
+        tempGlobal.verticalCursorPosition = -1;
     } else if (key.startsWith("Paste: ")) {
         tempGlobal.input = tempGlobal.input + key.replace("Paste: ", "")
     } else if (key.startsWith("Clear: ")) {
