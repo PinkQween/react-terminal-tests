@@ -1,20 +1,25 @@
-const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
-
 const playOnline = async (args, tempGlobals) => {
-    const playYouTubeVideo = async (videoId, speed, volume) => {
+    const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+
+    const playYouTubeVideo = async (videoId) => {
         try {
             const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`);
             const data = await response.json();
             console.log(data);
             if (data.items.length > 0) {
-                // const duration = data.items[0].contentDetails.duration;
-                const audioUrl = `https://www.youtube.com/watch?v=${videoId}`;
-                const audioElement = new Audio(audioUrl);
-                audioElement.playbackRate = speed;
-                audioElement.volume = volume;
-                audioElement.play().catch(error => {
-                    console.error("Error playing audio:", error);
-                });
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&loop=1&modestbranding=1&rel=0&showinfo=0&autohide=1`;
+                iframe.setAttribute('allow', 'autoplay; fullscreen'); // Set allow attribute
+                document.body.appendChild(iframe);
+
+                // Function to stop the audio playback
+                const stopAudio = () => {
+                    iframe.remove(); // Remove the iframe to stop the audio playback
+                };
+
+                // Return the function to stop the audio playback
+                return stopAudio;
             } else {
                 console.error("YouTube video not found");
             }
@@ -22,7 +27,6 @@ const playOnline = async (args, tempGlobals) => {
             console.error("Error fetching YouTube video:", error);
         }
     };
-
     if (args.length === 0) {
         tempGlobals.output = "Please specify YouTube video URL";
         return tempGlobals;
@@ -35,31 +39,8 @@ const playOnline = async (args, tempGlobals) => {
     }
     const videoId = youtubeUrlMatch[1];
 
-    let speed = 1.0;
-    let volume = 1.0;
-
-    // Process flags and options
-    for (let i = 1; i < args.length; i++) {
-        const arg = args[i];
-        if (arg.startsWith('-')) {
-            // Handle flags and options
-            switch (arg) {
-                case '--speed':
-                case '-s':
-                    speed = parseFloat(args[++i]);
-                    break;
-                case '--volume':
-                case '-v':
-                    volume = parseFloat(args[++i]);
-                    break;
-                default:
-                    console.error('Unknown flag:', arg);
-            }
-        }
-    }
-
     // Play YouTube video
-    await playYouTubeVideo(videoId, speed, volume);
+    await playYouTubeVideo(videoId);
 
     return tempGlobals;
 };

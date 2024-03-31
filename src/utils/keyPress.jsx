@@ -15,22 +15,25 @@ const KeyPress = ({ children }) => {
         }
 
         const handleKeyDown = async (e) => {
+            if (e.key === "\\") {
+                await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
+            }
+
             if (e.key === "Meta") {
                 setIsMetaPressed(true);
             }
 
-            if (!isMetaPressed) {
-                handleKeyPress(e.key, context);
+            if (!isMetaPressed && e.key !== "\\") {
+                await handleKeyPress(e.key, context);
             }
 
             if (isMetaPressed && e.key === "v") {
-                e.preventDefault();
-                handleKeyDown(`Paste: ${await navigator.clipboard.readText()}`, context);
+                await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
             }
             
             if (isMetaPressed && e.key === "l") {
-                e.preventDefault();
-                handleKeyDown(`Clear:`, context);
+                e.preventDefault()
+                await handleKeyPress(`Clear:`, context);
             }
 
             // Create a div element with a height of 300vh

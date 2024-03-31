@@ -1,7 +1,7 @@
 import * as commands from './commands';
 import commandNotFound from './commandNotFound';
 
-const handleCommand = (input, tempGlobal) => {
+const handleCommand = async (input, tempGlobal) => {
     const [command, ...args] = parseCommand(input);
 
     console.warn(tempGlobal);
@@ -15,7 +15,7 @@ const handleCommand = (input, tempGlobal) => {
 
     for (const commandFunc of Object.values(commands)) {
         if (command?.toLowerCase() == commandFunc.name.toLowerCase()) {
-            tempGlobal = commandFunc(args, tempGlobal);
+            tempGlobal = await commandFunc(args, tempGlobal);
             return tempGlobal
         }
     }

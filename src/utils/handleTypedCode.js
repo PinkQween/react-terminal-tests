@@ -1,6 +1,6 @@
 import handleCommand from "./handleCommands";
 
-export default (key, { setGlobal, global }) => {
+export default async (key, { setGlobal, global }) => {
     let tempGlobal = {...global}
 
     const { input, cursorPosition, history, verticalCursorPosition, currentDirectory } = tempGlobal
@@ -23,7 +23,7 @@ export default (key, { setGlobal, global }) => {
             // Remove character after the cursor
             tempGlobal.input = input.slice(0, cursorPosition) + input.slice(cursorPosition + 1);
         }
-    } else if (key.length === 1) {
+    } else if (key?.length === 1) {
         // Handle regular key press
         // Insert character at the cursor position
         tempGlobal.input = input.slice(0, cursorPosition) + key + input.slice(cursorPosition);
@@ -53,7 +53,7 @@ export default (key, { setGlobal, global }) => {
         }
     } else if (key === "Enter") {
         tempGlobal.output = ""
-        tempGlobal = handleCommand(input, tempGlobal);
+        tempGlobal = await handleCommand(input, tempGlobal);
         console.log(tempGlobal);
         tempGlobal.input = "";
         tempGlobal.cursorPosition = 0;
