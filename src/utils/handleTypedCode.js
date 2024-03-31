@@ -47,6 +47,7 @@ export default (key, { setGlobal, global }) => {
             tempGlobal.input = ""
         }
     } else if (key === "Enter") {
+        tempGlobal.output = ""
         tempGlobal = handleCommand(input, tempGlobal);
         console.log(tempGlobal);
         tempGlobal.input = "";

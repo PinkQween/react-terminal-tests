@@ -9,6 +9,13 @@ const play = (args, tempGlobals) => {
         'sn': { mp3: SNMP3, flac: SNFLAC }
     };
 
+    const isValidPath = (path) => {
+        // Regular expression to match Linux-like file paths with additional prefixes
+        const pathRegex = /^((\/?(\.\.\/|\.\.?$|\.\/|\.?$|~\/|~$))?(\/?[^/\0]*(\/[^/\0]+)*(\.\w+)?))$/;
+
+        return pathRegex.test(path);
+    };
+
     const playAudio = (audioFile, speed, pitch, volume) => {
         const audioElement = new Audio();
 
@@ -27,9 +34,9 @@ const play = (args, tempGlobals) => {
     };
 
     if (args.length === 0) {
-        return 'Please specify a file path';
+        tempGlobals.output = "Please specify audio file";
+        return tempGlobals;
     }
-
     let filePath = '';
     let speed = 1.0;
     let volume = 1.0;
@@ -56,44 +63,17 @@ const play = (args, tempGlobals) => {
                 default:
                     console.error('Unknown flag:', arg);
             }
-        } else {
-            // The argument is assumed to be the file path
-            filePath = args[0];
         }
     }
 
-    if (!filePath) {
-        return 'Please specify a file path';
+    filePath = args[0];
+
+    if (!isValidPath(filePath)) {
+        tempGlobals.output = "Invalid path";
+        return tempGlobals;
     }
 
     const mapPath = (filePath) => {
-        // const resolvePath = (directory, filePath) => {
-        //     if (filePath.startsWith('./')) {
-        //         return joinPath(directory, filePath.slice(2));
-        //     } else if (filePath.startsWith('../')) {
-        //         const parentDirectory = getParentDirectory(directory);
-        //         return resolvePath(parentDirectory, filePath.slice(3));
-        //     } else if (filePath.startsWith('/')) {
-        //         return '/' + filePath.slice(1);
-        //     } else {
-        //         return joinPath(directory, filePath);
-        //     }
-        // };
-
-        // const getParentDirectory = (directory) => {
-        //     const segments = directory.split('/');
-        //     segments.pop(); // Remove the last segment
-        //     return segments.join('/');
-        // };
-
-        // const joinPath = (directory, filePath) => {
-        //     if (directory === '/') {
-        //         return `/${filePath}`;
-        //     } else {
-        //         return `${directory}/${filePath}`;
-        //     }
-        // };
-
         const traverse = (structure, targetFile, lastStruct) => {
             for (const items of Object.values(structure)) {
                 for (const i in items) {
@@ -125,30 +105,80 @@ const play = (args, tempGlobals) => {
             }
         };
 
-        // Find the current structure matching the current directory
-        let currentStruct = null;
         const findCurrentStructure = (directory, structure) => {
-            if (directory === structure.path) {
-                currentStruct = structure;
-                return;
+            const parts = directory.split('/');
+            let parentDirectory = parts.slice(0, -1).join('/');
+
+            if (parentDirectory == "") {
+                parentDirectory = "/";
             }
-            for (const item of structure) {
-                if (typeof item !== 'string' && item.contents) {
-                    findCurrentStructure(item.path, item);
+
+            console.log(parentDirectory)
+            console.log(structure.path)
+            console.log(parentDirectory == structure.path)
+
+            if (parentDirectory === structure.path) {
+                return structure;
+            }
+
+            console.log("contents")
+            console.log(structure.contents)
+            
+            for (const i in structure.contents) {
+                if (typeof structure.contents[i] != "string") {
+                    return findCurrentStructure(directory, structure.contents[i]);
                 }
             }
+
+            console.error('no return called yet');
+            console.log(structure)
         };
 
-        console.log(tempGlobals)
 
-        findCurrentStructure(tempGlobals.currentDirectory, tempGlobals.files);
+        const resolvePath = (directory, path) => {
+            const parts = path.split('/');
+            let resolvedPath = directory.split('/');
+
+            for (const part of parts) {
+                if (part === '.' || part === '') {
+                    // Ignore current directory notation
+                    continue;
+                } else if (part === '..') {
+                    // Move up one directory level
+                    resolvedPath.pop();
+                } else {
+                    // Add directory or file name
+                    resolvedPath.push(part);
+                }
+            }
+
+            return resolvedPath.join('/');
+        };
+
+        const expandTilde = (path) => {
+            tempGlobals.currentDirectory = ""
+            // Replace '~' with root directory path '/'
+            return path.replace(/^~($|\/)/, '/');
+        };
+
+        if (tempGlobals.currentDirectory == "/") {
+            tempGlobals.currentDirectory = ""
+        }
+
+        console.log(resolvePath(tempGlobals.currentDirectory, expandTilde(filePath)));
+
+        const currentStruct = findCurrentStructure(resolvePath(tempGlobals.currentDirectory, expandTilde(filePath)), tempGlobals.files);
+
+        console.error("structure:");
+        console.warn(currentStruct);
+        // console.log(findCurrentStructure(resolvePath(tempGlobals.currentDirectory, expandTilde(filePath)), tempGlobals.files));
 
         if (!currentStruct) {
             return null; // If current directory not found, return null
         }
 
         // Start traversal from the current structure
-        return traverse(currentStruct, filePath, currentStruct);
+        return traverse(currentStruct, resolvePath(tempGlobals.currentDirectory, expandTilde(filePath)), currentStruct);
     };
 
     const absoluteFilePath = mapPath(filePath);
