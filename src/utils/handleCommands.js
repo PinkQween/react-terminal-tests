@@ -1,9 +1,10 @@
 // import * as commands from './commands';
 import commandNotFound from './commandNotFound';
-
-import * as commands from './commands';
+import { cd, play, clear, echo, playOnline } from './commands';
 
 const handleCommand = async (input, tempGlobal) => {
+    const commands = {cd, play, clear, echo, playOnline}
+
     const [command, ...args] = parseCommand(input);
 
     console.warn(tempGlobal);
