@@ -3,7 +3,7 @@ import handleCommand from "./handleCommands";
 export default (key, { setGlobal, global }) => {
     let tempGlobal = {...global}
 
-    const { input, cursorPosition, history, verticalCursorPosition } = tempGlobal
+    const { input, cursorPosition, history, verticalCursorPosition, currentDirectory } = tempGlobal
 
     console.log(key);
     console.log(tempGlobal);
@@ -51,8 +51,8 @@ export default (key, { setGlobal, global }) => {
         console.log(tempGlobal);
         tempGlobal.input = "";
         tempGlobal.cursorPosition = 0;
-        tempGlobal.history.push({ input, output: tempGlobal.output });
-        input.startsWith("clear") ? console.log("Not displaying clear command") : tempGlobal.displayHistory.push({ input, output: tempGlobal.output });
+        tempGlobal.history.push({ input, output: tempGlobal.output, location: currentDirectory });
+        input.startsWith("clear") ? console.log("Not displaying clear command") : tempGlobal.displayHistory.push({ input, output: tempGlobal.output, location: currentDirectory });
         tempGlobal.verticalCursorPosition = history.length;
     } else if (key.startsWith("Paste: ")) {
         tempGlobal.input = tempGlobal.input + key.replace("Paste: ", "")

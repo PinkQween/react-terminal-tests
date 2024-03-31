@@ -52,8 +52,8 @@ const App = () => {
     setGlobals(global);
   }, [global]);
 
-  const inputPrefixer = (input) => {
-    return `${ip}@hannaskairipa.com @ ${globals.currentDirectory} $ ${input}`
+  const inputPrefixer = (input, location) => {
+    return `${ip}@hannaskairipa.com @ ${location ? location : globals.currentDirectory} $ ${input}`
   }
 
   // Function to render input string with cursor
@@ -98,7 +98,7 @@ const App = () => {
       <div className="output">
         {displayHistory.map((entry, index) => (
           <div key={index}>
-            <span>{inputPrefixer(entry.input)}</span>
+            <span>{inputPrefixer(entry.input, entry.location)}</span>
             <br />
             <span>{entry.output}</span>
           </div>
