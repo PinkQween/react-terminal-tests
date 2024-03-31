@@ -6,9 +6,10 @@ import KeyPress from './utils/keyPress.jsx';
 import Context from './utils/globalsContext.js';
 import globals from './utils/globals.js';
 
-const saveDataToLocalStorage = async (data) => {
-  const { displayHistory, ...dataWithoutHistory } = data;
-  console.log(displayHistory)
+// Function to save data to localStorage
+const saveDataToLocalStorage = (data) => {
+  const dataWithoutHistory = { ...data };
+  dataWithoutHistory.displayHistory = [];
   localStorage.setItem("data", JSON.stringify(dataWithoutHistory));
 };
 
@@ -25,7 +26,7 @@ const loadDataFromLocalStorage = () => {
 };
 
 const Root = () => {
-  const [global, setGlobal] = useState(loadDataFromLocalStorage || globals);
+  const [global, setGlobal] = useState(loadDataFromLocalStorage() ||globals);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
