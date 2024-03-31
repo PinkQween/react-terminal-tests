@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bunx --bun vite --host",
     "build": "bunx --bun vite build",
-    "deploy": "bun run build && git add . && git commit -m 'Build for deployment' && git push origin main && git subtree push --prefix dist origin gh-pages",
+    "deploy": "bun run build && git add . && git commit -m 'Build for deployment' && git push origin main && git subtree push --prefix dist origin gh-pages --force",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
