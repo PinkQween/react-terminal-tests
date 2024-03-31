@@ -1,7 +1,12 @@
-const echo = (args) => {
-    if (args[0]) return args[0]
-    
-    return "Please add args"
+const echo = (args, tempGlobal) => {
+    if (args[0]) {
+        tempGlobal.output = args[0]
+        return tempGlobal;
+    }
+
+    tempGlobal.output = "Please add args"
+
+    return tempGlobal;
 };
 
 export default echo;

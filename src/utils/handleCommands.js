@@ -1,22 +1,28 @@
 import * as commands from './commands';
 import commandNotFound from './commandNotFound';
 
-const handleCommand = (input) => {
+const handleCommand = (input, tempGlobal) => {
     const [command, ...args] = parseCommand(input);
 
-    if (command == "") {
-        return "\n";
+    console.warn(tempGlobal);
+
+    if (command?.trim() == "" || command == undefined) {
+        tempGlobal.output = ""
+        return tempGlobal;
     }
 
     console.log(commands)
 
     for (const commandFunc of Object.values(commands)) {
-        if (command.toLowerCase() == commandFunc.name.toLowerCase()) {
-            return commandFunc(args);
+        if (command?.toLowerCase() == commandFunc.name.toLowerCase()) {
+            tempGlobal = commandFunc(args, tempGlobal);
+            return tempGlobal
         }
     }
 
-    return commandNotFound(command, args);
+    tempGlobal.output = commandNotFound(command, args);
+
+    return tempGlobal;
 }
 
 const parseCommand = (input) => {

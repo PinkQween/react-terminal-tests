@@ -1,7 +1,7 @@
 import handleCommand from "./handleCommands";
 
 export default (key, { setGlobal, global }) => {
-    const tempGlobal = {...global}
+    let tempGlobal = {...global}
 
     const { input, cursorPosition, history, verticalCursorPosition } = tempGlobal
 
@@ -47,16 +47,22 @@ export default (key, { setGlobal, global }) => {
             tempGlobal.input = ""
         }
     } else if (key === "Enter") {
-        tempGlobal.output = handleCommand(input);
+        tempGlobal = handleCommand(input, tempGlobal);
+        console.log(tempGlobal);
         tempGlobal.input = "";
         tempGlobal.cursorPosition = 0;
-        tempGlobal.history.push({input, output: tempGlobal.output });
+        tempGlobal.history.push({ input, output: tempGlobal.output });
+        input.startsWith("clear") ? console.log("Not displaying clear command") : tempGlobal.displayHistory.push({ input, output: tempGlobal.output });
         tempGlobal.verticalCursorPosition = history.length;
     } else if (key.startsWith("Paste: ")) {
         tempGlobal.input = tempGlobal.input + key.replace("Paste: ", "")
+    } else if (key.startsWith("Clear: ")) {
+        tempGlobal.handleCommand("clear", tempGlobal);
     }
 
     console.log(tempGlobal);
 
     setGlobal(tempGlobal)
+
+    window.scrollTo(0, document.body.scrollHeight);
 }

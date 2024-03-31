@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useContext, useState, useRef } from "react"; 
 import handleKeyPress from './handleTypedCode';
-import { useEffect, useContext, useState } from "react";
 import globalsContext from './globalsContext';
 
 const KeyPress = ({ children }) => {
@@ -7,10 +8,7 @@ const KeyPress = ({ children }) => {
     const [isMetaPressed, setIsMetaPressed] = useState(false);
 
     useEffect(() => {
-        // let timeoutId;
-
         const handleKeyUp = (e) => {
-            console.log(e.key);
             if (e.key == "Meta") {
                 setIsMetaPressed(false);
             }
@@ -29,6 +27,22 @@ const KeyPress = ({ children }) => {
                 e.preventDefault();
                 handleKeyDown(`Paste: ${await navigator.clipboard.readText()}`, context);
             }
+            
+            if (isMetaPressed && e.key === "l") {
+                e.preventDefault();
+                handleKeyDown(`Clear:`, context);
+            }
+
+            // Create a div element with a height of 300vh
+            const divElement = document.createElement('div');
+            divElement.style.height = '300vh';
+
+            // Append the div to the body or any other container you want
+            document.body.appendChild(divElement);
+
+            window.screenY = window.screen.height;
+
+            document.body.removeChild(divElement);
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -38,7 +52,7 @@ const KeyPress = ({ children }) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, [context]);
+    }, [context, isMetaPressed]);
 
     return children;
 }

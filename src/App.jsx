@@ -52,6 +52,10 @@ const App = () => {
     setGlobals(global);
   }, [global]);
 
+  const inputPrefixer = (input) => {
+    return `${ip}@hannaskairipa.com @ ${globals.currentDirectory} $ ${input}`
+  }
+
   // Function to render input string with cursor
   const renderInputWithCursor = () => {
     const { input, cursorPosition } = globals;
@@ -71,36 +75,40 @@ const App = () => {
     const afterCursor = sanitizedInput.slice(adjustedCursorPosition);
 
     return (
-      <div className="terminal">
+      <>
         {/* Render characters before the cursor */}
         {beforeCursor !== "" && (
-          <span>{ip}@hannaskairipa.com $ {beforeCursor || "\u00A0"}</span>
+          <span>{inputPrefixer(beforeCursor || "\u00A0")}</span>
         ) || (
-          <span>{ip}@hannaskairipa.com $ </span>
+          <span>{inputPrefixer("")}</span>
         )}
         {/* Render cursor */}
         <span ref={cursorRef} className={"cursor blink"}>█</span>
         {/* Render characters after the cursor or an invisible placeholder if there are no characters */}
         <span style={afterCursorStyle}>{afterCursor || "\u00A0"}</span>
-      </div>
+        </>
     );
   };
 
   // Function to render output
   const renderOutput = () => {
-    const { history } = globals;
+    const { displayHistory } = globals;
 
     return (
       <div className="output">
-        {history.map((entry, index) => (
-          <div key={index}>{entry.output}</div>
+        {displayHistory.map((entry, index) => (
+          <div key={index}>
+            <span>{inputPrefixer(entry.input)}</span>
+            <br />
+            <span>{entry.output}</span>
+          </div>
         ))}
       </div>
     );
   };
 
   return (
-    <div className="app">
+    <div className="terminal">
       {renderOutput()}
       {renderInputWithCursor()}
     </div>
