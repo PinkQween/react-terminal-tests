@@ -10,6 +10,7 @@ import globals from './utils/globals.js';
 const saveDataToLocalStorage = (data) => {
   const dataWithoutHistory = { ...data };
   dataWithoutHistory.displayHistory = [];
+  dataWithoutHistory.input = "";
   localStorage.setItem("data", JSON.stringify(dataWithoutHistory));
 };
 
@@ -20,6 +21,7 @@ const loadDataFromLocalStorage = () => {
     const parsedData = JSON.parse(data);
     // Ensure displayHistory is initialized as an empty array
     parsedData.displayHistory = parsedData.displayHistory || [];
+    parsedData.input = ""
     return parsedData;
   }
   return null;
