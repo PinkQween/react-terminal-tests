@@ -1,5 +1,7 @@
-import * as commands from './commands';
+// import * as commands from './commands';
 import commandNotFound from './commandNotFound';
+
+import * as commands from './commands';
 
 const handleCommand = async (input, tempGlobal) => {
     const [command, ...args] = parseCommand(input);
@@ -12,6 +14,10 @@ const handleCommand = async (input, tempGlobal) => {
     }
 
     console.log(commands)
+
+    if (command?.toLowerCase() == "play-online") {
+        return await commands.playOnline(args, tempGlobal);
+    }
 
     for (const commandFunc of Object.values(commands)) {
         if (command?.toLowerCase() == commandFunc.name.toLowerCase()) {
