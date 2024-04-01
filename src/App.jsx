@@ -93,12 +93,16 @@ const App = () => {
   // Function to render output
   const renderOutput = () => {
     const { displayHistory } = globals;
-
+  
     return (
       <div className="output">
         {displayHistory.map((entry, index) => (
           <div key={index}>
-            <span>{inputPrefixer(entry.input, entry.location)}</span>
+            {/* {(entry.input !== undefined) && ( */}
+              <>
+                <span>{inputPrefixer(entry.input, entry.location)}</span>
+              </>
+            {/* )} */}
             <br />
             <span>{entry.output}</span>
           </div>

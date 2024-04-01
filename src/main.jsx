@@ -22,7 +22,7 @@ const loadDataFromLocalStorage = () => {
   if (data) {
     const parsedData = JSON.parse(data);
     // Ensure displayHistory is initialized as an empty array
-    parsedData.displayHistory = parsedData.displayHistory || [];
+    parsedData.displayHistory = [];
     parsedData.input = ""
     parsedData.files = globals.files 
     parsedData.cursorPosition = 0

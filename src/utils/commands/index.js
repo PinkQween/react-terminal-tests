@@ -4,6 +4,7 @@ import play from "./play";
 import playOnline from "./playOnline";
 import clear from "./clear";
 import open from "./open";
+import pwd from "./pwd";
 
 export {
     cd,
@@ -11,5 +12,6 @@ export {
     play,
     playOnline,
     clear,
-    open
+    open,
+    pwd
 }

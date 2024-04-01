@@ -1,17 +1,19 @@
 // import * as commands from './commands';
 import commandNotFound from './commandNotFound';
-import { cd, play, clear, echo, playOnline, open } from './commands';
+import { cd, play, clear, echo, playOnline, open, pwd } from './commands';
 
-const handleCommand = async (input, tempGlobal) => {
-    const commands = { cd, play, clear, echo, playOnline, open }
+const handleCommand = async (input, tempGlobals) => {
+    const commands = { cd, play, clear, echo, playOnline, open, pwd }
 
     const [command, ...args] = parseCommand(input);
 
-    console.warn(tempGlobal);
+    let tempGlobal = tempGlobals
+
+    console.warn(tempGlobals);
 
     if (command?.trim() == "" || command == undefined) {
-        tempGlobal.output = ""
-        return tempGlobal;
+        tempGlobals.output = ""
+        return tempGlobals;
     }
 
     console.log(commands)
@@ -22,14 +24,14 @@ const handleCommand = async (input, tempGlobal) => {
 
     for (const commandFunc of Object.values(commands)) {
         if (command?.toLowerCase() == commandFunc.name.toLowerCase()) {
-            tempGlobal = await commandFunc(args, tempGlobal);
-            return tempGlobal
+            tempGlobals = await commandFunc(args, tempGlobal);
+            return tempGlobals
         }
     }
 
-    tempGlobal.output = commandNotFound(command, args);
+    tempGlobals.output = commandNotFound(command, args);
 
-    return tempGlobal;
+    return tempGlobals;
 }
 
 const parseCommand = (input) => {

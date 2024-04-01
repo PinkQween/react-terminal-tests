@@ -2,6 +2,7 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import handleKeyPress from './handleTypedCode';
 import globalsContext from './globalsContext';
+import run from "./handlers/startScript";
 
 const KeyPress = ({ children }) => {
     const context = useContext(globalsContext);
@@ -65,7 +66,11 @@ const KeyPress = ({ children }) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, [context, isMetaPressed]);
+    }, [context, isMetaPressed, isBackSlashPressedOnce]);
+
+    useEffect(() => {
+        run(context);
+    }, [])
 
     return children;
 }
