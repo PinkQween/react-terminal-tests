@@ -11,6 +11,8 @@ const saveDataToLocalStorage = (data) => {
   const dataWithoutHistory = { ...data };
   dataWithoutHistory.displayHistory = [];
   dataWithoutHistory.input = "";
+  dataWithoutHistory.cursorPosition = 0;
+  dataWithoutHistory.verticalCursorPosition = -1;
   localStorage.setItem("data", JSON.stringify(dataWithoutHistory));
 };
 
@@ -22,13 +24,16 @@ const loadDataFromLocalStorage = () => {
     // Ensure displayHistory is initialized as an empty array
     parsedData.displayHistory = parsedData.displayHistory || [];
     parsedData.input = ""
+    parsedData.files = globals.files 
+    parsedData.cursorPosition = 0
+    parsedData.verticalCursorPosition = -1
     return parsedData;
   }
   return null;
 };
 
 const Root = () => {
-  const [global, setGlobal] = useState(loadDataFromLocalStorage() ||globals);
+  const [global, setGlobal] = useState(loadDataFromLocalStorage() || globals);
 
   useEffect(() => {
     const handleBeforeUnload = () => {

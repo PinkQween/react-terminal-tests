@@ -1,11 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useContext, useState, useRef } from "react"; 
+import React, { useEffect, useContext, useState, useRef } from "react";
 import handleKeyPress from './handleTypedCode';
 import globalsContext from './globalsContext';
 
 const KeyPress = ({ children }) => {
     const context = useContext(globalsContext);
     const [isMetaPressed, setIsMetaPressed] = useState(false);
+    const [isBackSlashPressedOnce, setIsBackSlashPressedOnce] = useState(false);
 
     useEffect(() => {
         const handleKeyUp = (e) => {
@@ -16,21 +17,30 @@ const KeyPress = ({ children }) => {
 
         const handleKeyDown = async (e) => {
             if (e.key === "\\") {
-                await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
+                if (isBackSlashPressedOnce) {
+                    await handleKeyPress(`RMLast: \\`, context);
+                    await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
+                }
+
+                setIsBackSlashPressedOnce(isBackSlashPressedOnce ? false : true);
+            }
+
+            if (e.key !== "\\" && isBackSlashPressedOnce) {
+                setIsBackSlashPressedOnce(false);
             }
 
             if (e.key === "Meta") {
                 setIsMetaPressed(true);
             }
 
-            if (!isMetaPressed && e.key !== "\\") {
+            if (!isMetaPressed && !(e.key === "\\" && isBackSlashPressedOnce)) {
                 await handleKeyPress(e.key, context);
             }
 
             if (isMetaPressed && e.key === "v") {
                 await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
             }
-            
+
             if (isMetaPressed && e.key === "l") {
                 e.preventDefault()
                 await handleKeyPress(`Clear:`, context);

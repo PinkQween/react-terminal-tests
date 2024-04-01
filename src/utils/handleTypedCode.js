@@ -1,7 +1,7 @@
 import handleCommand from "./handleCommands";
 
 export default async (key, { setGlobal, global }) => {
-    let tempGlobal = {...global}
+    let tempGlobal = { ...global }
 
     const { input, cursorPosition, history, verticalCursorPosition, currentDirectory } = tempGlobal
 
@@ -46,7 +46,7 @@ export default async (key, { setGlobal, global }) => {
         }
     } else if (key === "ArrowDown") {
         if (verticalCursorPosition > 0) {
-            tempGlobal.verticalCursorPosition = tempGlobal.verticalCursorPosition - 1
+            tempGlobal.verticalCursorPosition = tempGlobal.verticalCursorPosition - 1;
             tempGlobal.input = tempGlobal.history[tempGlobal.verticalCursorPosition].input;
         } else {
             tempGlobal.input = ""
@@ -57,13 +57,17 @@ export default async (key, { setGlobal, global }) => {
         console.log(tempGlobal);
         tempGlobal.input = "";
         tempGlobal.cursorPosition = 0;
-        tempGlobal.history.push({ input, output: tempGlobal.output, location: currentDirectory });
+        tempGlobal.history.unshift({ input, output: tempGlobal.output, location: currentDirectory });
         input.startsWith("clear") ? console.log("Not displaying clear command") : tempGlobal.displayHistory.push({ input, output: tempGlobal.output, location: currentDirectory });
         tempGlobal.verticalCursorPosition = -1;
     } else if (key.startsWith("Paste: ")) {
-        tempGlobal.input = tempGlobal.input + key.replace("Paste: ", "")
+        const pastedText = key.replace("Paste: ", "");
+        tempGlobal.input = input.slice(0, cursorPosition) + pastedText + input.slice(cursorPosition);
+        tempGlobal.cursorPosition += pastedText.length; // Adjust cursor position
     } else if (key.startsWith("Clear: ")) {
         tempGlobal.handleCommand("clear", tempGlobal);
+    } else if (key.startsWith("RMLast: ")) {
+        // needs to be implemented
     }
 
     console.log(tempGlobal);
