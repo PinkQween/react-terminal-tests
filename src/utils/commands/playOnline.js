@@ -1,4 +1,6 @@
 const playOnline = async (args, tempGlobals) => {
+    tempGlobals.exitCode = 1;
+
     const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
 
     const playYouTubeVideo = async (videoId) => {
@@ -41,6 +43,8 @@ const playOnline = async (args, tempGlobals) => {
 
     // Play YouTube video
     await playYouTubeVideo(videoId);
+
+    tempGlobals.exitCode = 0;
 
     return tempGlobals;
 };

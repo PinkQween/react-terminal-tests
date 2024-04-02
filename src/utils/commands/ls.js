@@ -28,6 +28,8 @@ const listContents = (directory, tempGlobal, perms) => {
 };
 
 const ls = (args, tempGlobal, perms) => {
+    tempGlobal.exitCode = 1;
+
     const currentDir = tempGlobal.currentDirectory;
     const currentStruct = findCurrentStructure(currentDir, tempGlobal.files);
 
@@ -40,6 +42,7 @@ const ls = (args, tempGlobal, perms) => {
 
     if (args.length === 0) {
         // No directory specified, list contents of current directory
+        tempGlobal.exitCode = 0;
         return listContents(currentStruct, tempGlobal, perms);
     } else {
         // Directory argument specified, find the specified directory and list its contents
@@ -56,34 +59,20 @@ const ls = (args, tempGlobal, perms) => {
 };
 
 const findCurrentStructure = (directory, structure) => {
-    console.log(directory);
-
     const parts = directory.split('/');
-    let parentDirectory = parts.slice(0, -1).join('/');
+    let currentStructure = structure;
 
-    if (parentDirectory == "") {
-        parentDirectory = "/";
+    for (const part of parts) {
+        if (!part) continue; // Skip empty parts (e.g., caused by leading or trailing slashes)
+        if (!currentStructure || !currentStructure.contents) return null; // Structure not found
+
+        const foundItem = currentStructure.contents.find(item => item.name === part);
+        if (!foundItem || typeof foundItem !== 'object') return null; // Item not found or not a directory
+
+        currentStructure = foundItem; // Move to the next level
     }
 
-    console.log(parentDirectory)
-    console.log(structure.path)
-    console.log(parentDirectory == structure.path)
-
-    if (parentDirectory === structure.path) {
-        return structure;
-    }
-
-    console.log("contents")
-    console.log(structure.contents)
-
-    for (const i in structure.contents) {
-        if (typeof structure.contents[i] != "string") {
-            return findCurrentStructure(directory, structure.contents[i]);
-        }
-    }
-
-    console.error('no return called yet');
-    console.log(structure)
+    return currentStructure;
 };
 
 const findDirectory = (directoryName, structure) => {

@@ -2,7 +2,7 @@ import PinkQween from './assets/cat/PinkQween.md.js'
 
 // eslint-disable-next-line no-unused-vars
 const cat = (args, tempGlobals) => {
-    console.log(PinkQween)
+    tempGlobals.exitCode = 1
 
     const files = {
         'pq': PinkQween
@@ -157,6 +157,8 @@ const cat = (args, tempGlobals) => {
     // Play the audio file
 
     tempGlobals.output = string;
+
+    tempGlobals.exitCode = 0;
 
     return tempGlobals;
 };

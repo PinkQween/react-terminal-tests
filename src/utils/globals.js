@@ -4,6 +4,7 @@ export default {
     history: [],
     displayHistory: [],
     cursorPosition: 0,
+    exitCode: 0,
     verticalCursorPosition: -1,
     currentDirectory: "/",
     files: {

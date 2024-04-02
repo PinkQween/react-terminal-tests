@@ -1,6 +1,8 @@
 const pwd = (args, global) => {
     const tempGlobal = global
 
+    tempGlobal.exitCode = 1;
+
     console.log(args);
 
     if (args.length > 1) {
@@ -16,6 +18,8 @@ const pwd = (args, global) => {
             tempGlobal.output = absolutePath;
         }
     }
+
+    tempGlobal.exitCode = 0;
 
     return tempGlobal;
 };

@@ -4,6 +4,8 @@ import SNMP3 from './assets/play/1-10 Sayo-nara.mp3';
 import SNFLAC from './assets/play/1-10 Sayo-nara.flac';
 
 const play = (args, tempGlobals) => {
+    tempGlobals.exitCode = 1;
+
     const audioFiles = {
         'yr': { mp3: YRMP3, flac: YRFLAC },
         'sn': { mp3: SNMP3, flac: SNFLAC }
@@ -205,6 +207,8 @@ const play = (args, tempGlobals) => {
 
     // Play the audio file
     playAudio(audioFile, speed, pitch, volume);
+
+    tempGlobals.exitCode = 0;
 
     return tempGlobals;
 };

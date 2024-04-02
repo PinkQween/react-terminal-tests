@@ -1,5 +1,6 @@
 const open = (args, tempGlobals) => {
     tempGlobals.output = ""
+    tempGlobals.exitCode = 1
 
     const isValidPath = (path) => {
         // Regular expression to match Linux-like file paths with additional prefixes
@@ -133,6 +134,8 @@ const open = (args, tempGlobals) => {
     if (absoluteFilePath == '/resume.pdf') {
         window.open("/resume.pdf", "mozillaWindow", "popup");
     }
+
+    tempGlobals.exitCode = 0;
 
     return tempGlobals;
 };

@@ -1,5 +1,8 @@
 const cd = (args, tempGlobal) => {
-    let finalReturn = {...tempGlobal}
+    let finalReturn = { ...tempGlobal }
+    
+    finalReturn.exitCode = 1;
+
     const {currentDirectory} = finalReturn
 
     const changeDir = (args, tempGlobalTemp) => {
@@ -76,6 +79,8 @@ const cd = (args, tempGlobal) => {
         console.log("test")
         finalReturn = tempGlobalTemp
     }
+
+    finalReturn.exitCode = 0;
 
     return finalReturn;
 }
