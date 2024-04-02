@@ -6,6 +6,7 @@ import clear from "./clear";
 import open from "./open";
 import pwd from "./pwd";
 import cat from "./cat";
+import ls from "./ls";
 
 export {
     cd,
@@ -15,5 +16,6 @@ export {
     clear,
     open,
     pwd,
-    cat
+    cat,
+    ls
 }

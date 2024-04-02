@@ -39,5 +39,16 @@ export default {
                 ]
             }
         ]
+    },
+    perms: {
+        "/": "rwxr-xr-x",
+        "/music": "rwxr-xr-x",
+        "/GitHub": "rwxr-xr-x",
+        "/GitHub/PinkQween": "rwxr-xr-x",
+        "/GitHub/PinkQween/PinkQween": "rwxr-xr-x",
+        "/sayo-nara.wav": "rw-r--r--",
+        "/resume.pdf": "rw-r--r--",
+        "/music/your-reality.wav": "rw-r--r--",
+        "/GitHub/PinkQween/README.md": "rw-r--r--",
     }
 };
