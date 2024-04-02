@@ -7,6 +7,7 @@ import open from "./open";
 import pwd from "./pwd";
 import cat from "./cat";
 import ls from "./ls";
+import tree from "./tree";
 
 export {
     cd,
@@ -17,5 +18,6 @@ export {
     open,
     pwd,
     cat,
-    ls
+    ls,
+    tree
 }

@@ -76,7 +76,7 @@ import * as commands from './commands';
 import commandNotFound from './commandNotFound';
 
 const handleCommand = async (input, tempGlobals) => {
-
+    let outputs = [];
     let tempGlobal = tempGlobals;
     let commandsToExecute = input.split(/\s*(\|\||\|&&|&&|\|\|)\s*/);
 
@@ -84,14 +84,22 @@ const handleCommand = async (input, tempGlobals) => {
         const commandStr = commandsToExecute[i].trim();
         const [command, ...args] = parseCommand(commandStr);
 
-        if (command.toLowerCase() === "play-online") {
-            tempGlobal = await commands.playOnline(args, tempGlobal);
-        } else if (commands[command.toLowerCase()]) {
-            tempGlobal.output = tempGlobal.output + (await commands[command.toLowerCase()](args, tempGlobal)).output;
-        } else {
-            tempGlobal.output = tempGlobal.output + (await commandNotFound(command, args)).output;
-            break;
+        console.log('Before executing command:', command, 'tempGlobal.currentDirectory:', tempGlobal.currentDirectory);
+        
+        if (command !== "|" && command !== "||" && command !== "&&") {
+            if (command.toLowerCase() === "play-online") {
+                tempGlobal = await commands.playOnline(args, tempGlobal);
+                outputs.push(tempGlobal.outputs ?? "");
+            } else if (commands[command.toLowerCase()]) {
+                tempGlobal = (await commands[command.toLowerCase()](args, tempGlobal));
+                outputs.push(tempGlobal.outputs ?? "");
+            } else {
+                tempGlobal = (await commandNotFound(command, args));
+                outputs.push(tempGlobal.outputs ?? "");
+            }
         }
+
+        console.log('After executing command:', command, 'tempGlobal.currentDirectory:', tempGlobal.currentDirectory);
 
         if (i < commandsToExecute.length - 1) {
             const operator = commandsToExecute[i + 1];
@@ -101,6 +109,12 @@ const handleCommand = async (input, tempGlobals) => {
                 break; // Stop execution if the previous command succeeded
             }
         }
+    }
+
+    // tempGlobal.output = outputs.join("");
+
+    for (const i in outputs) {
+        tempGlobal.output += "\n" + outputs[i];
     }
 
     return tempGlobal;

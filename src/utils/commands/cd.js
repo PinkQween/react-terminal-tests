@@ -74,15 +74,18 @@ const cd = (args, tempGlobal) => {
 
     if (!directoryExists(tempGlobalTemp.currentDirectory, tempGlobal.files)) {
         finalReturn.output = "Directory doesn't exist";
-        finalReturn.currentDirectory = currentDirectory
+        finalReturn.currentDirectory = currentDirectory;
+        console.log("returning");
+        console.log(currentDirectory);
+        console.log(finalReturn);
+        return finalReturn;
     } else {
-        console.log("test")
-        finalReturn = tempGlobalTemp
+        finalReturn = tempGlobalTemp;
+
+        finalReturn.exitCode = 0;
+
+        return finalReturn;
     }
-
-    finalReturn.exitCode = 0;
-
-    return finalReturn;
 }
 
 export default cd;
