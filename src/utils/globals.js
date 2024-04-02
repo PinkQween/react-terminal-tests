@@ -18,6 +18,25 @@ export default {
                 contents: [
                     "your-reality.wav",
                 ]
+            },
+            {
+                name: "GitHub",
+                path: "/GitHub",
+                contents: [
+                    {
+                        name: "PinkQween",
+                        path: "/GitHub/PinkQween",
+                        contents: [
+                            {
+                                name: "PinkQween",
+                                path: "/GitHub/PinkQween/PinkQween",
+                                contents: [
+                                    "README.md",
+                                ]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

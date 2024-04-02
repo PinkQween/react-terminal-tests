@@ -3,7 +3,7 @@ import handleCommand from "./handleCommands";
 export default async (key, { setGlobal, global }) => {
     let tempGlobal = { ...global }
 
-    const { input, cursorPosition, history, verticalCursorPosition, currentDirectory } = tempGlobal
+    const { input, cursorPosition, history, verticalCursorPosition, currentDirectory } = tempGlobal;
 
     console.log(key);
     console.log(tempGlobal);

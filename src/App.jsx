@@ -103,8 +103,12 @@ const App = () => {
                 <span>{inputPrefixer(entry.input, entry.location)}</span>
               </>
             {/* )} */}
-            <br />
-            <span>{entry.output}</span>
+            {entry.output.split('\n').map((line, lineIndex) => (
+              <span key={lineIndex}>
+                <br /> {/* Add a <br /> element after each line */}
+                {line}
+              </span>
+            ))}
           </div>
         ))}
       </div>

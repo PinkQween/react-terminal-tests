@@ -82,32 +82,6 @@ const cd = (args, tempGlobal) => {
 
 export default cd;
 
-// const directoryExists = (path, root) => {
-//     const checkIfSegmetExsists = (struct, directory) => {
-//         for (const i in struct.contents) {
-//             const file = struct.contents[i];
-
-//             if (typeof file != "string" && file.name == directory) {
-//                 return file
-//             }
-//         }
-
-//         return struct.contents[directory]
-//     }
-
-//     let exists;
-
-//     const parts = path.split("/")
-
-//     for (const i in parts) {
-//         const part = parts[i]
-
-//         checkIfSegmetExsists()
-//     }
-
-//     return exists;
-// };
-
 const directoryExists = (path, root) => {
     const checkIfSegmentExists = (struct, directory) => {
         for (const item of struct.contents) {
