@@ -19,6 +19,8 @@ const generateTree = (directory, level = 0, isLast = true, prefix = '') => {
             tree += generateTree(item, level + 1, isSubLast, newPrefix);
         }
     }
+    
+    tree = tree.replace(/\n$/, "")
 
     return tree;
 };

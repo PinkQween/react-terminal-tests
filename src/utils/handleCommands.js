@@ -76,9 +76,15 @@ import * as commands from './commands';
 import commandNotFound from './commandNotFound';
 
 const handleCommand = async (input, tempGlobals) => {
+    if (input?.trim() == "" || input == undefined) {
+        tempGlobals.output = ""
+        return tempGlobals;
+    }
+
     let outputs = [];
     let tempGlobal = tempGlobals;
     let commandsToExecute = input.split(/\s*(\|\||\|&&|&&|\|\|)\s*/);
+    let param = ""
 
     for (let i = 0; i < commandsToExecute.length; i++) {
         const commandStr = commandsToExecute[i].trim();
@@ -88,13 +94,13 @@ const handleCommand = async (input, tempGlobals) => {
         
         if (command !== "|" && command !== "||" && command !== "&&") {
             if (command.toLowerCase() === "play-online") {
-                tempGlobal = await commands.playOnline(args, tempGlobal);
+                tempGlobal = await commands.playOnline(args, tempGlobal, param);
                 outputs.push(tempGlobal.outputs ?? "");
             } else if (commands[command.toLowerCase()]) {
-                tempGlobal = (await commands[command.toLowerCase()](args, tempGlobal));
+                tempGlobal = (await commands[command.toLowerCase()](args, tempGlobal, param));
                 outputs.push(tempGlobal.outputs ?? "");
             } else {
-                tempGlobal = (await commandNotFound(command, args));
+                tempGlobal = (await commandNotFound(command, args, param));
                 outputs.push(tempGlobal.outputs ?? "");
             }
         }
@@ -107,6 +113,8 @@ const handleCommand = async (input, tempGlobals) => {
                 break; // Stop execution if the previous command failed
             } else if (operator === '||' && tempGlobal.exitCode === 0) {
                 break; // Stop execution if the previous command succeeded
+            } else if (operator === "|") {
+                param = tempGlobal.output;
             }
         }
     }
@@ -116,6 +124,8 @@ const handleCommand = async (input, tempGlobals) => {
     for (const i in outputs) {
         tempGlobal.output += "\n" + outputs[i];
     }
+
+    console.log(tempGlobal)
 
     return tempGlobal;
 }
