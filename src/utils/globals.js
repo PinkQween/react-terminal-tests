@@ -6,6 +6,7 @@ export default {
     cursorPosition: 0,
     exitCode: 0,
     verticalCursorPosition: -1,
+    loading: false,
     currentDirectory: "/",
     files: {
         name: "hannaskairipa.com",

@@ -13,14 +13,14 @@ const generateTree = (directory, level = 0, isLast = true, prefix = '') => {
         const newPrefix = prefix + (isLast ? '   ' : '│  ');
 
         if (typeof item === 'string') {
-            tree += `${indent}${isSubLast ? '└─ ' : '├─ '}${item}\n`;
+            tree += `\n${indent}${isSubLast ? '└─ ' : '├─ '}${item}`;
         } else if (typeof item === 'object' && item.name !== undefined) {
-            tree += `${indent}${isSubLast ? '└─ ' : '├─ '}${item.name}\n`;
+            tree += `\n${indent}${isSubLast ? '└─ ' : '├─ '}${item.name}`;
             tree += generateTree(item, level + 1, isSubLast, newPrefix);
         }
     }
     
-    tree = tree.replace(/\n$/, "")
+    // tree = tree.slice(1, tree.length)
 
     return tree;
 };

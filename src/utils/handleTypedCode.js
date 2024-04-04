@@ -53,7 +53,12 @@ export default async (key, { setGlobal, global }) => {
         }
     } else if (key === "Enter") {
         tempGlobal.output = ""
+        tempGlobal.loading = true
+        setGlobal(tempGlobal);
+        tempGlobal.displayHistory.push({ input })
         tempGlobal = await handleCommand(input, tempGlobal);
+        tempGlobal.loading = false
+        tempGlobal.displayHistory.pop()
         console.log(tempGlobal);
         tempGlobal.input = "";
         tempGlobal.cursorPosition = 0;

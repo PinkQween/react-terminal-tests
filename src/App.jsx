@@ -103,7 +103,7 @@ const App = () => {
                 <span>{inputPrefixer(entry.input, entry.location)}</span>
               </>
             {/* )} */}
-            {entry.output.split('\n').map((line, lineIndex) => (
+            {entry.output?.split('\n').map((line, lineIndex) => (
               <span key={lineIndex}>
                 <br /> {/* Add a <br /> element after each line */}
                 {line}
@@ -118,7 +118,12 @@ const App = () => {
   return (
     <div className="terminal">
       {renderOutput()}
-      {renderInputWithCursor()}
+      {global.loading == false && (
+        <>
+          {renderInputWithCursor()}
+        </>
+      )
+      }
     </div>
   );
 };
