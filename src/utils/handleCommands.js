@@ -179,6 +179,7 @@ const handleCommand = async (input, tempGlobals) => {
 
     let outputs = [];
     let tempGlobal = tempGlobals;
+<<<<<<< HEAD
     let commandsToExecute = input.split(/\s*(\|\||\|&&|&&|\|\|)\s*/);
     let param = "";
 
@@ -197,6 +198,48 @@ const handleCommand = async (input, tempGlobals) => {
                 outputs.push(tempGlobal.output ?? "");
             } else {
                 tempGlobal = await commandNotFound(command, args, param);
+=======
+    let commandsToExecute = input.split(/\s*(\|\||&&|\|)\s*/);
+    let param = "";
+
+    let addedNextArgs = []
+    
+    console.log(`to execute: ${commandsToExecute}`);
+    console.warn(commandsToExecute)
+    
+    for (let i = 0; i < commandsToExecute.length; i++) {
+        const commandStr = commandsToExecute[i].trim();
+        let [command, ...args] = parseCommand(commandStr);
+        
+        console.log(args)
+        console.log(typeof [])
+        console.log(typeof args)
+        if (typeof args == "string") {
+            args = [args];
+        }
+        console.log(typeof args)
+        
+        
+        args += [addedNextArgs];
+        
+        if (typeof args == "string") {
+            args = [args];
+        }
+        
+        console.log('Before executing command:', command, 'tempGlobal.currentDirectory:', tempGlobal.currentDirectory);
+
+        console.log(command.toLowerCase());
+        console.log(transformCommand(command.toLowerCase()));
+        
+        if (command !== "|" && command !== "||" && command !== "&&") {
+            if (commands[transformCommand(command.toLowerCase())]) {
+//                tempGlobal = await commands[transformCommand(command.toLowerCase())](args, tempGlobal, param);
+                console.log(args)
+                tempGlobal = await commands[transformCommand(command.toLowerCase())](args, tempGlobal);
+                outputs.push(tempGlobal.output ?? "");
+            } else {
+                tempGlobal = await commandNotFound(command, args, tempGlobal);
+>>>>>>> 544b6cf (almost got piping)
                 outputs.push(tempGlobal.output ?? "");
             }
         }
@@ -210,7 +253,11 @@ const handleCommand = async (input, tempGlobals) => {
             } else if (operator === '||' && tempGlobal.exitCode === 0) {
                 break; // Stop execution if the previous command succeeded
             } else if (operator === "|") {
+<<<<<<< HEAD
                 param = tempGlobal.output;
+=======
+                addedNextArgs = outputs.pop();
+>>>>>>> 544b6cf (almost got piping)
             }
         }
     }
@@ -255,8 +302,35 @@ const parseCommand = (input) => {
     if (currentPart.trim()) {
         parts.push(currentPart);
     }
+<<<<<<< HEAD
+=======
+    
+    console.warn(parts)
+>>>>>>> 544b6cf (almost got piping)
 
     return parts;
 }
 
+<<<<<<< HEAD
 export default handleCommand;
+=======
+function transformCommand(command) {
+    let lastCharHyphen = -2;
+    
+    return command
+        .split('')
+        .map((char, index) => {
+            if (lastCharHyphen == index - 1) {
+                return char.toUpperCase();
+            } else if (char === '-') {
+                lastCharHyphen = index;
+                return '';
+            } else {
+                return char;
+            }
+        })
+        .join('');
+}
+
+export default handleCommand;
+>>>>>>> 544b6cf (almost got piping)

@@ -58,6 +58,7 @@ const App = () => {
 
   // Function to render input string with cursor
   const renderInputWithCursor = () => {
+<<<<<<< HEAD
     const { input, cursorPosition } = globals;
 
     if (input === undefined) {
@@ -89,6 +90,40 @@ const App = () => {
         </>
     );
   };
+=======
+  const { input, cursorPosition } = globals;
+
+  if (input === undefined) {
+    return null; // Render nothing if input is undefined
+  }
+
+  // Ensure cursor is at least one character behind in empty string
+  const adjustedCursorPosition = input ? cursorPosition : 0;
+
+  // Replace multiple spaces with visible space characters
+  const sanitizedInput = input.replace(/ /g, "\u00A0");
+
+  // Split the input string into two parts: before and after the cursor position
+  const beforeCursor = sanitizedInput.slice(0, adjustedCursorPosition);
+  const afterCursor = sanitizedInput.slice(adjustedCursorPosition);
+
+  return (
+    <>
+      {/* Render characters before the cursor */}
+      {beforeCursor !== "" ? (
+        <span>{inputPrefixer(beforeCursor || "\u00A0")}</span>
+      ) : (
+        <span>{inputPrefixer("")}</span>
+      )}
+      {/* Render cursor */}
+      <span ref={cursorRef} className={"cursor blink"}>█</span>
+      {/* Render characters after the cursor or an invisible placeholder if there are no characters */}
+      <span style={afterCursorStyle}>{afterCursor || "\u00A0"}</span>
+    </>
+  );
+};
+
+>>>>>>> 544b6cf (almost got piping)
 
   // Function to render output
   const renderOutput = () => {

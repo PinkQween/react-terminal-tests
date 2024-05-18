@@ -48,6 +48,30 @@ const Root = () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [global]);
+  
+  useEffect(() => {
+    checkPermissions();
+  }, []);
+
+  const checkPermissions = async () => {
+    try {
+      const result = await navigator.permissions.query({ name: 'clipboard-read' });
+      if (result.state === 'granted' || result.state === 'prompt') {
+        console.log('Clipboard-read permission granted.');
+      } else {
+        console.error('Clipboard-read permission denied.');
+      }
+
+      const resultWrite = await navigator.permissions.query({ name: 'clipboard-write' });
+      if (resultWrite.state === 'granted' || resultWrite.state === 'prompt') {
+        console.log('Clipboard-write permission granted.');
+      } else {
+        console.error('Clipboard-write permission denied.');
+      }
+    } catch (err) {
+      console.error('Permission query failed: ', err);
+    }
+  };
 
   return (
     <Context.Provider value={{ global, setGlobal }}>

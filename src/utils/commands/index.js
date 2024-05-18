@@ -8,6 +8,10 @@ import pwd from "./pwd";
 import cat from "./cat";
 import ls from "./ls";
 import tree from "./tree";
+<<<<<<< HEAD
+=======
+import pbpaste from "./pbpaste"
+>>>>>>> 544b6cf (almost got piping)
 
 export {
     cd,
@@ -19,5 +23,11 @@ export {
     pwd,
     cat,
     ls,
+<<<<<<< HEAD
     tree
 }
+=======
+    tree,
+    pbpaste
+}
+>>>>>>> 544b6cf (almost got piping)

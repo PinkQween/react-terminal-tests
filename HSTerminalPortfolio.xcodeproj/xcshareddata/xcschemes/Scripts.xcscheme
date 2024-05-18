@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1520"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD7F99722BF8EEFE00D2B6D9"
+               BuildableName = "Scripts"
+               BlueprintName = "Scripts"
+               ReferencedContainer = "container:HSTerminalPortfolio.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "#!/bin/bash&#10;&#10;# Check if bun is installed&#10;if ! command -v bun &amp;&gt; /dev/null; then&#10;    echo &quot;bun is not installed. Installing bun in the local user folder.&quot;&#10;&#10;    # Create a directory for local binaries if it doesn&apos;t exist&#10;    mkdir -p ~/.local/bin&#10;&#10;    # Download and install bun&#10;    curl -fsSL https://bun.sh/install | bash&#10;&#10;    # Add bun to PATH&#10;    export PATH=$PATH:~/.bun/bin&#10;&#10;    # Add bun to PATH in the shell profile for future sessions&#10;    echo &apos;export PATH=$PATH:~/.bun/bin&apos; &gt;&gt; ~/.bashrc&#10;&#10;    echo &quot;bun has been installed.&quot;&#10;else&#10;    echo &quot;bun is already installed.&quot;&#10;fi&#10;&#10;bun i&#10;bun dev&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "BD7F99722BF8EEFE00D2B6D9"
+                     BuildableName = "Scripts"
+                     BlueprintName = "Scripts"
+                     ReferencedContainer = "container:HSTerminalPortfolio.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "BD7F99722BF8EEFE00D2B6D9"
+            BuildableName = "Scripts"
+            BlueprintName = "Scripts"
+            ReferencedContainer = "container:HSTerminalPortfolio.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "#!/bin/bash&#10;&#10;# Check if bun is installed&#10;if ! command -v bun &amp;&gt; /dev/null; then&#10;    echo &quot;bun is not installed. Installing bun in the local user folder.&quot;&#10;&#10;    # Create a directory for local binaries if it doesn&apos;t exist&#10;    mkdir -p ~/.local/bin&#10;&#10;    # Download and install bun&#10;    curl -fsSL https://bun.sh/install | bash&#10;&#10;    # Add bun to PATH&#10;    export PATH=$PATH:~/.bun/bin&#10;&#10;    # Add bun to PATH in the shell profile for future sessions&#10;    echo &apos;export PATH=$PATH:~/.bun/bin&apos; &gt;&gt; ~/.bashrc&#10;&#10;    echo &quot;bun has been installed.&quot;&#10;else&#10;    echo &quot;bun is already installed.&quot;&#10;fi&#10;&#10;bun i&#10;bun run build&#10;">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+   </ArchiveAction>
+</Scheme>
