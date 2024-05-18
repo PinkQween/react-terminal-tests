@@ -179,26 +179,6 @@ const handleCommand = async (input, tempGlobals) => {
 
     let outputs = [];
     let tempGlobal = tempGlobals;
-<<<<<<< HEAD
-    let commandsToExecute = input.split(/\s*(\|\||\|&&|&&|\|\|)\s*/);
-    let param = "";
-
-    for (let i = 0; i < commandsToExecute.length; i++) {
-        const commandStr = commandsToExecute[i].trim();
-        const [command, ...args] = parseCommand(commandStr);
-
-        console.log('Before executing command:', command, 'tempGlobal.currentDirectory:', tempGlobal.currentDirectory);
-
-        if (command !== "|" && command !== "||" && command !== "&&") {
-            if (command.toLowerCase() === "play-online") {
-                tempGlobal = await commands.playOnline(args, tempGlobal, param);
-                outputs.push(tempGlobal.output ?? "");
-            } else if (commands[command.toLowerCase()]) {
-                tempGlobal = await commands[command.toLowerCase()](args, tempGlobal, param);
-                outputs.push(tempGlobal.output ?? "");
-            } else {
-                tempGlobal = await commandNotFound(command, args, param);
-=======
     let commandsToExecute = input.split(/\s*(\|\||&&|\|)\s*/);
     let param = "";
 
@@ -239,7 +219,6 @@ const handleCommand = async (input, tempGlobals) => {
                 outputs.push(tempGlobal.output ?? "");
             } else {
                 tempGlobal = await commandNotFound(command, args, tempGlobal);
->>>>>>> 544b6cf (almost got piping)
                 outputs.push(tempGlobal.output ?? "");
             }
         }
@@ -253,11 +232,7 @@ const handleCommand = async (input, tempGlobals) => {
             } else if (operator === '||' && tempGlobal.exitCode === 0) {
                 break; // Stop execution if the previous command succeeded
             } else if (operator === "|") {
-<<<<<<< HEAD
-                param = tempGlobal.output;
-=======
                 addedNextArgs = outputs.pop();
->>>>>>> 544b6cf (almost got piping)
             }
         }
     }
@@ -302,18 +277,10 @@ const parseCommand = (input) => {
     if (currentPart.trim()) {
         parts.push(currentPart);
     }
-<<<<<<< HEAD
-=======
-    
     console.warn(parts)
->>>>>>> 544b6cf (almost got piping)
-
     return parts;
 }
-
-<<<<<<< HEAD
-export default handleCommand;
-=======
+            
 function transformCommand(command) {
     let lastCharHyphen = -2;
     
@@ -333,4 +300,3 @@ function transformCommand(command) {
 }
 
 export default handleCommand;
->>>>>>> 544b6cf (almost got piping)

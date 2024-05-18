@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useContext, useEffect, useState, useRef } from "react";
 import globalsContext from "./utils/globalsContext";
-import globalsTemp from './utils/globals'
+import globalsTemp from "./utils/globals";
 import axios from "axios";
 
 const App = () => {
@@ -11,7 +11,9 @@ const App = () => {
   const [ip, setIP] = useState("localhost");
 
   const getIP = async () => {
-    const res = await axios.get("https://api.ipify.org/?format=json").catch(() => setIP("localhost"));
+    const res = await axios
+      .get("https://api.ipify.org/?format=json")
+      .catch(() => setIP("localhost"));
     setIP(res?.data?.ip ?? "localhost");
   };
 
@@ -41,7 +43,7 @@ const App = () => {
   // Style object to move the next element after the cursor
   const afterCursorStyle = {
     marginLeft: -cursorWidth + "px",
-    paddingLeft: paddingWidth + "px" // Use dynamically measured text padding width
+    paddingLeft: paddingWidth + "px", // Use dynamically measured text padding width
   };
 
   const [globals, setGlobals] = useState(globalsTemp);
@@ -53,12 +55,11 @@ const App = () => {
   }, [global]);
 
   const inputPrefixer = (input, location) => {
-    return `${ip}@hannaskairipa.com @ ${location ? location : globals.currentDirectory} $ ${input}`
-  }
+    return `${ip}@hannaskairipa.com @ ${location ? location : globals.currentDirectory} $ ${input}`;
+  };
 
   // Function to render input string with cursor
   const renderInputWithCursor = () => {
-<<<<<<< HEAD
     const { input, cursorPosition } = globals;
 
     if (input === undefined) {
@@ -78,67 +79,35 @@ const App = () => {
     return (
       <>
         {/* Render characters before the cursor */}
-        {beforeCursor !== "" && (
+        {beforeCursor !== "" ? (
           <span>{inputPrefixer(beforeCursor || "\u00A0")}</span>
-        ) || (
+        ) : (
           <span>{inputPrefixer("")}</span>
         )}
         {/* Render cursor */}
-        <span ref={cursorRef} className={"cursor blink"}>█</span>
+        <span ref={cursorRef} className={"cursor blink"}>
+          █
+        </span>
         {/* Render characters after the cursor or an invisible placeholder if there are no characters */}
         <span style={afterCursorStyle}>{afterCursor || "\u00A0"}</span>
-        </>
+      </>
     );
   };
-=======
-  const { input, cursorPosition } = globals;
-
-  if (input === undefined) {
-    return null; // Render nothing if input is undefined
-  }
-
-  // Ensure cursor is at least one character behind in empty string
-  const adjustedCursorPosition = input ? cursorPosition : 0;
-
-  // Replace multiple spaces with visible space characters
-  const sanitizedInput = input.replace(/ /g, "\u00A0");
-
-  // Split the input string into two parts: before and after the cursor position
-  const beforeCursor = sanitizedInput.slice(0, adjustedCursorPosition);
-  const afterCursor = sanitizedInput.slice(adjustedCursorPosition);
-
-  return (
-    <>
-      {/* Render characters before the cursor */}
-      {beforeCursor !== "" ? (
-        <span>{inputPrefixer(beforeCursor || "\u00A0")}</span>
-      ) : (
-        <span>{inputPrefixer("")}</span>
-      )}
-      {/* Render cursor */}
-      <span ref={cursorRef} className={"cursor blink"}>█</span>
-      {/* Render characters after the cursor or an invisible placeholder if there are no characters */}
-      <span style={afterCursorStyle}>{afterCursor || "\u00A0"}</span>
-    </>
-  );
-};
-
->>>>>>> 544b6cf (almost got piping)
 
   // Function to render output
   const renderOutput = () => {
     const { displayHistory } = globals;
-  
+
     return (
       <div className="output">
         {displayHistory.map((entry, index) => (
           <div key={index}>
             {/* {(entry.input !== undefined) && ( */}
-              <>
-                <span>{inputPrefixer(entry.input, entry.location)}</span>
-              </>
+            <>
+              <span>{inputPrefixer(entry.input, entry.location)}</span>
+            </>
             {/* )} */}
-            {entry.output?.split('\n').map((line, lineIndex) => (
+            {entry.output?.split("\n").map((line, lineIndex) => (
               <span key={lineIndex}>
                 <br /> {/* Add a <br /> element after each line */}
                 {line}
@@ -153,12 +122,7 @@ const App = () => {
   return (
     <div className="terminal">
       {renderOutput()}
-      {global.loading == false && (
-        <>
-          {renderInputWithCursor()}
-        </>
-      )
-      }
+      {global.loading == false && <>{renderInputWithCursor()}</>}
     </div>
   );
 };

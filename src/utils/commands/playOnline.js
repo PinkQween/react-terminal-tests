@@ -54,26 +54,16 @@
 const playOnline = async (args, tempGlobals) => {
     tempGlobals.exitCode = 1;
     let iframe; // Declare iframe here
-
-<<<<<<< HEAD
-    const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
-
-    const playYouTubeVideo = async (videoId) => {
-        try {
-            const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`);
-            const data = await response.json();
-            console.log(data);
-            if (data.items.length > 0) {
-=======
     // const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
 
+    console.log(args)
+    
     const playYouTubeVideo = async (videoId) => {
         try {
             // const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${apiKey}`);
             // const data = await response.json();
             // console.log(data);
             // if (data.items.length > 0) {
->>>>>>> 544b6cf (almost got piping)
                 iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&loop=1&modestbranding=1&rel=0&showinfo=0&autohide=1`;
@@ -87,15 +77,9 @@ const playOnline = async (args, tempGlobals) => {
 
                 // Return the function to stop the audio playback
                 return stopAudio;
-<<<<<<< HEAD
-            } else {
-                console.error("YouTube video not found");
-            }
-=======
             // } else {
             //     console.error("YouTube video not found");
             // }
->>>>>>> 544b6cf (almost got piping)
         } catch (error) {
             console.error("Error fetching YouTube video:", error);
         }

@@ -17,22 +17,22 @@ const KeyPress = ({ children }) => {
         }
 
         const handleKeyDown = async (e) => {
-            if (e.key === "\\") {
-                if (isBackSlashPressedOnce) {
-                    await handleKeyPress(`RMLast: \\`, context);
-                    await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
-                }
+        // if (e.key === "\\") {
+               //  if (isBackSlashPressedOnce) {
+                    // await handleKeyPress(`RMLast: \\`, context);
+                   //  await handleKeyPress(`Paste: ${await navigator.clipboard.readText()}`, context);
+                // }
 
-                setIsBackSlashPressedOnce(isBackSlashPressedOnce ? false : true);
-            }
+                // setIsBackSlashPressedOnce(isBackSlashPressedOnce ? false : true);
+            // }
 
-            if (e.key !== "\\" && isBackSlashPressedOnce) {
-                setIsBackSlashPressedOnce(false);
-            }
+            // if (e.key !== "\\" && isBackSlashPressedOnce) {
+            //    setIsBackSlashPressedOnce(false);
+            // }
 
-            if (e.key === "Meta") {
-                setIsMetaPressed(true);
-            }
+            // if (e.key === "Meta") {
+            //     setIsMetaPressed(true);
+            // }
 
             if (!isMetaPressed && !(e.key === "\\" && isBackSlashPressedOnce)) {
                 await handleKeyPress(e.key, context);
