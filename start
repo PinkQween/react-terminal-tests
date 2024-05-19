@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Check if bun is installed
+if ! command -v bun &> /dev/null; then
+    echo "bun is not installed. Installing bun in the local user folder."
+
+    # Create a directory for local binaries if it doesn't exist
+    mkdir -p ~/.local/bin
+
+    # Download and install bun
+    curl -fsSL https://bun.sh/install | bash
+
+    # Add bun to PATH
+    export PATH=$PATH:~/.bun/bin
+
+    # Add bun to PATH in the shell profile for future sessions
+    echo 'export PATH=$PATH:~/.bun/bin' >> ~/.bashrc
+
+    echo "bun has been installed."
+else
+    echo "bun is already installed."
+fi
+
+bun i
+bun dev
+

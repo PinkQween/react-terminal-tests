@@ -10520,6 +10520,7 @@
 		BD7F99732BF8EEFE00D2B6D9 /* Scripts */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Scripts; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7F99762BF8EEFF00D2B6D9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BD7F997C2BF8F28900D2B6D9 /* pbpaste.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = pbpaste.js; sourceTree = "<group>"; };
+		BDC908452BF99F0500B06EF3 /* me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = me.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32982,6 +32983,7 @@
 		BD7F99602BF8EE2E00D2B6D9 /* public */ = {
 			isa = PBXGroup;
 			children = (
+				BDC908452BF99F0500B06EF3 /* me.png */,
 				BD7F99612BF8EE2E00D2B6D9 /* CNAME */,
 				BD7F99622BF8EE2E00D2B6D9 /* resume.pdf */,
 			);

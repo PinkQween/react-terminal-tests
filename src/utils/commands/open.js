@@ -1,5 +1,6 @@
 const open = (args, tempGlobals) => {
     tempGlobals.output = ""
+    const originalPath = tempGlobals.currentDirectory
     tempGlobals.exitCode = 1
 
     const isValidPath = (path) => {
@@ -10,7 +11,7 @@ const open = (args, tempGlobals) => {
     };
 
     if (args.length === 0) {
-        tempGlobals.output = "Please specify audio file";
+        tempGlobals.output = "Please specify file";
         return tempGlobals;
     }
 
@@ -130,11 +131,16 @@ const open = (args, tempGlobals) => {
     };
 
     const absoluteFilePath = mapPath(filePath);
+    
+    console.log(absoluteFilePath);
 
     if (absoluteFilePath == '/resume.pdf') {
         window.open("/resume.pdf", "mozillaWindow", "popup");
+    } else if (absoluteFilePath == '/me.svg') {
+        window.open("/me.png", "mozillaWindow", "popup");
     }
 
+    tempGlobals.currentDirectory = originalPath;
     tempGlobals.exitCode = 0;
 
     return tempGlobals;

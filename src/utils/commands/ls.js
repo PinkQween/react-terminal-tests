@@ -1,6 +1,91 @@
-// eslint-disable-next-line no-unused-vars
+const ls = (args, tempGlobal, perms) => {
+    tempGlobal.exitCode = 1;
+
+    const currentDir = tempGlobal.currentDirectory;
+    const targetDir = args[0] ?? currentDir;
+
+    const path = resolvePath(currentDir, expandTilde(targetDir), tempGlobal.files);
+
+    if (!path) {
+        tempGlobal.output = "Directory not found";
+        tempGlobal.currentDirectory = currentDir;
+        return tempGlobal;
+    }
+
+    tempGlobal.exitCode = 0;
+
+    const newTempGlobal = listContents(path, tempGlobal, perms);
+    newTempGlobal.currentDirectory = currentDir;
+
+    return newTempGlobal;
+};
+
+const resolvePath = (currentDir, path, root) => {
+    const parts = path.split('/');
+    const currentParts = currentDir.split('/').filter(Boolean);
+
+    for (const part of parts) {
+        if (part === '..') {
+            if (currentParts.length > 0) {
+                currentParts.pop();
+            }
+        } else if (part !== '.' && part !== '') {
+            currentParts.push(part);
+        }
+    }
+
+    const resolvedPath = '/' + currentParts.join('/');
+    return findCurrentStructure(resolvedPath, root);
+};
+
+const findCurrentStructure = (directory, structure) => {
+    const parts = directory.split('/').filter(Boolean);
+    let currentStructure = structure;
+
+    for (const part of parts) {
+        if (!currentStructure || !currentStructure.contents) return null;
+
+        const foundItem = currentStructure.contents.find(item => item.name === part);
+        if (!foundItem || typeof foundItem !== 'object') return null;
+
+        currentStructure = foundItem;
+    }
+
+    return currentStructure;
+};
+
+const expandTilde = (path) => {
+    return path.replace(/^~($|\/)/, '/');
+};
+
+export default ls;
+
+const directoryExists = (path, root) => {
+    const checkIfSegmentExists = (struct, directory) => {
+        for (const item of struct.contents) {
+            if (typeof item !== "string" && item.name === directory) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    let currentDir = root;
+    const parts = path.split("/").filter(part => part !== '');
+
+    for (const part of parts) {
+        if (!checkIfSegmentExists(currentDir, part)) {
+            return false;
+        }
+        const nextDir = currentDir.contents.find(item => typeof item !== "string" && item.name === part);
+        currentDir = nextDir;
+    }
+
+    return true;
+};
+
 const listContents = (directory, tempGlobal, perms) => {
-    if (directory.contents.length === 0) {
+    if (!directory || directory.contents.length === 0) {
         tempGlobal.output = "Directory is empty";
         return tempGlobal;
     }
@@ -8,80 +93,10 @@ const listContents = (directory, tempGlobal, perms) => {
     const fileList = directory.contents.filter(item => typeof item === 'string');
     const directoryList = directory.contents.filter(item => typeof item === 'object');
 
-    const fileNames = fileList.map(file => {
-        const filePath = directory.path === '/' ? directory.path + file : directory.path + '/' + file;
-        console.log(filePath);
-        // return `${perms[filePath]} ${file}`;
-        return file
-    });
-    const directoryNames = directoryList.map(dir => {
-        const dirPath = dir.path || directory.path;
-        console.log(dirPath);
-        // return `${perms[dirPath]} ${dir.name}/`;
-        return dir.name;
-    });
+    const fileNames = fileList.map(file => file);
+    const directoryNames = directoryList.map(dir => dir.name);
 
     const result = [...directoryNames, ...fileNames].join('\n');
-
     tempGlobal.output = result;
     return tempGlobal;
 };
-
-const ls = (args, tempGlobal, perms) => {
-    tempGlobal.exitCode = 1;
-
-    const currentDir = tempGlobal.currentDirectory;
-    const currentStruct = findCurrentStructure(currentDir, tempGlobal.files);
-
-    if (!currentStruct) {
-        tempGlobal.output = "Directory not found";
-        return tempGlobal;
-    }
-
-    console.log(currentStruct);
-
-    if (args.length === 0) {
-        // No directory specified, list contents of current directory
-        tempGlobal.exitCode = 0;
-        return listContents(currentStruct, tempGlobal, perms);
-    } else {
-        // Directory argument specified, find the specified directory and list its contents
-        const directoryName = args[0];
-        const targetDirectory = findDirectory(directoryName, currentStruct);
-
-        if (!targetDirectory) {
-            tempGlobal.output = `Directory '${directoryName}' not found`;
-            return tempGlobal;
-        }
-
-        return listContents(targetDirectory, tempGlobal, perms);
-    }
-};
-
-const findCurrentStructure = (directory, structure) => {
-    const parts = directory.split('/');
-    let currentStructure = structure;
-
-    for (const part of parts) {
-        if (!part) continue; // Skip empty parts (e.g., caused by leading or trailing slashes)
-        if (!currentStructure || !currentStructure.contents) return null; // Structure not found
-
-        const foundItem = currentStructure.contents.find(item => item.name === part);
-        if (!foundItem || typeof foundItem !== 'object') return null; // Item not found or not a directory
-
-        currentStructure = foundItem; // Move to the next level
-    }
-
-    return currentStructure;
-};
-
-const findDirectory = (directoryName, structure) => {
-    for (const item of structure.contents) {
-        if (typeof item === "object" && item.name === directoryName) {
-            return item;
-        }
-    }
-    return null;
-};
-
-export default ls;
