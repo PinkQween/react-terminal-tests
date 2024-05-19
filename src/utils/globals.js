@@ -14,6 +14,7 @@ export default {
         contents: [
             "sayo-nara.wav",
             "resume.pdf",
+            "me.svg",
             {
                 name: "music",
                 path: "/music",
