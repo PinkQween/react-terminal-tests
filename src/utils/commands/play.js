@@ -70,23 +70,25 @@ const play = (args, tempGlobals) => {
     let speed = 1.0;
     let volume = 1.0;
     let pitch = 1.0;
+    
+    const actuatArgs = args[0].split(',')
 
     // Process flags and options
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
+    for (let i = 0; i < actuatArgs.length; i++) {
+        const arg = actuatArgs[i];
         if (arg.startsWith('-')) {
             switch (arg) {
                 case '--speed':
                 case '-s':
-                    speed = parseFloat(args[++i]);
+                    speed = parseFloat(actuatArgs[++i]);
                     break;
                 case '--volume':
                 case '-v':
-                    volume = parseFloat(args[++i]);
+                    volume = parseFloat(actuatArgs[++i]);
                     break;
                 case '--pitch':
                 case '-p':
-                    pitch = parseFloat(args[++i]);
+                    pitch = parseFloat(actuatArgs[++i]);
                     break;
                 default:
                     console.error('Unknown flag:', arg);
@@ -107,6 +109,8 @@ const play = (args, tempGlobals) => {
         return tempGlobals;
     }
 
+    console.log(speed);
+    
     playAudio(audioFile, speed, pitch, volume);
 
     tempGlobals.exitCode = 0;

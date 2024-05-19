@@ -22,4 +22,4 @@ else
 fi
 
 bun i
-bun run buid
+bun run build
